@@ -4,6 +4,11 @@ const {
     updateUserCart
 } = require("../models/userModel");
 
+const {
+    createOrder,
+    getOrdersByUserId
+} = require("../models/orderModel");
+
 
 // ========================================
 // CREATE USER
@@ -186,6 +191,115 @@ const deleteCartItem = async (req, res) => {
 
 
 // ========================================
+// PLACE ORDER
+// ========================================
+
+const placeOrder = async (req, res) => {
+
+    try {
+
+        const userId = req.params.userId;
+
+        const user = await findUserById(userId);
+
+        if (!user) {
+
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        const cart = user.cart || [];
+
+        if (cart.length === 0) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Cart is empty"
+            });
+        }
+
+        // Save every cart item into orders collection
+
+        for (const item of cart) {
+
+            await createOrder({
+                userId: userId,
+                productId: item.productId,
+                name: item.name,
+                quantity: item.quantity
+            });
+
+        }
+
+        // Empty cart after successful order
+
+        await updateUserCart(userId, []);
+
+        res.status(200).json({
+            success: true,
+            message: "Order placed successfully",
+            orders: cart
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to place order",
+            error: error.message
+        });
+    }
+};
+
+
+// ========================================
+// GET USER ORDERS
+// ========================================
+
+const getUserOrders = async (req, res) => {
+
+    try {
+
+        const userId = req.params.userId;
+
+        const user = await findUserById(userId);
+
+        if (!user) {
+
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        const orders = await getOrdersByUserId(userId);
+
+        console.log("User Orders:", orders);
+
+        res.status(200).json({
+            success: true,
+            message: "Orders retrieved successfully",
+            orders: orders
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to retrieve orders",
+            error: error.message
+        });
+    }
+};
+
+
+// ========================================
 // EXPORT
 // ========================================
 
@@ -193,5 +307,7 @@ module.exports = {
     addUser,
     getUser,
     fixCart,
-    deleteCartItem
+    deleteCartItem,
+    placeOrder,
+    getUserOrders
 };

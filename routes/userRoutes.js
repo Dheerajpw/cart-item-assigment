@@ -6,7 +6,9 @@ const {
     addUser,
     getUser,
     fixCart,
-    deleteCartItem
+    deleteCartItem,
+    placeOrder,
+    getUserOrders
 } = require("../controllers/userController");
 
 
@@ -47,6 +49,26 @@ router.put(
 router.delete(
     "/users/:userId/cart/:productId",
     deleteCartItem
+);
+
+
+// ========================================
+// PLACE ORDER
+// ========================================
+
+router.post(
+    "/users/:userId/order",
+    placeOrder
+);
+
+
+// ========================================
+// GET USER ORDERS
+// ========================================
+
+router.get(
+    "/users/:userId/orders",
+    getUserOrders
 );
 
 
