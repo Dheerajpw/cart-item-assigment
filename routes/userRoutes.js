@@ -8,7 +8,8 @@ const {
     fixCart,
     deleteCartItem,
     placeOrder,
-    getUserOrders
+    getUserOrders,
+    addCartItem
 } = require("../controllers/userController");
 
 
@@ -39,6 +40,16 @@ router.get(
 router.put(
     "/users/:userId/fix-cart",
     fixCart
+);
+
+
+// ========================================
+// ADD ITEM TO CART
+// ========================================
+
+router.post(
+    "/users/:userId/cart",
+    addCartItem
 );
 
 

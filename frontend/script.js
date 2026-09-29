@@ -1,82 +1,159 @@
-const API_URL =
-    "http://localhost:5000/api/users/6abbb271cdb8b556c19ddd40/orders";
+const USER_ID =
+    "6abbb271cdb8b556c19ddd40";
 
-const ordersContainer =
-    document.getElementById("ordersContainer");
+const API_BASE_URL =
+    "http://localhost:5000/api";
+
+
+// ========================================
+// PRODUCTS
+// ========================================
+
+const products = [
+
+    {
+        productId: "101",
+        name: "Hair Cut",
+        quantity: 1
+    },
+
+    {
+        productId: "102",
+        name: "Hair Spa",
+        quantity: 1
+    },
+
+    {
+        productId: "103",
+        name: "Hair Coloring",
+        quantity: 1
+    },
+
+    {
+        productId: "104",
+        name: "Face Cleanup",
+        quantity: 1
+    }
+
+];
+
+
+// ========================================
+// ELEMENTS
+// ========================================
+
+const productsContainer =
+    document.getElementById("productsContainer");
 
 const message =
     document.getElementById("message");
 
 
 // ========================================
-// GET USER ORDERS
+// SHOW PRODUCTS
 // ========================================
 
-const getOrders = async () => {
+const showProducts = () => {
+
+    productsContainer.innerHTML = "";
+
+    products.forEach(product => {
+
+        const productCard =
+            document.createElement("div");
+
+        productCard.className =
+            "product-card";
+
+        productCard.innerHTML = `
+
+            <h2>
+                ${product.name}
+            </h2>
+
+            <p>
+                Product ID:
+                ${product.productId}
+            </p>
+
+            <button
+                onclick="addToCart(
+                    '${product.productId}',
+                    '${product.name}'
+                )"
+            >
+                Add to Cart
+            </button>
+
+        `;
+
+        productsContainer.appendChild(
+            productCard
+        );
+
+    });
+
+};
+
+
+// ========================================
+// ADD TO CART
+// ========================================
+
+const addToCart = async (
+    productId,
+    name
+) => {
 
     try {
 
-        const response = await fetch(API_URL);
+        const response = await fetch(
+            `${API_BASE_URL}/users/${USER_ID}/cart`,
+            {
+                method: "POST",
 
-        const data = await response.json();
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    productId: productId,
+
+                    name: name,
+
+                    quantity: 1
+
+                })
+
+            }
+        );
+
+        const data =
+            await response.json();
 
         if (!data.success) {
 
             message.innerText =
-                "Failed to load orders.";
+                "Failed to add product.";
 
             return;
-        }
 
-        const orders = data.orders;
-
-        if (orders.length === 0) {
-
-            message.innerText =
-                "No orders found.";
-
-            return;
         }
 
         message.innerText =
-            `Total Orders: ${orders.length}`;
+            `${name} added to cart successfully.`;
 
-        ordersContainer.innerHTML = "";
+        // =================================
+        // OPEN CART PAGE
+        // =================================
 
-        orders.forEach(order => {
+        setTimeout(() => {
 
-            const orderCard =
-                document.createElement("div");
+            openCart();
 
-            orderCard.className = "order-card";
-
-            orderCard.innerHTML = `
-                <h2>${order.name}</h2>
-
-                <p>
-                    <strong>Product ID:</strong>
-                    ${order.productId}
-                </p>
-
-                <p>
-                    <strong>Quantity:</strong>
-                    ${order.quantity}
-                </p>
-
-                <p>
-                    <strong>User ID:</strong>
-                    ${order.userId}
-                </p>
-
-                <p>
-                    <strong>Order ID:</strong>
-                    ${order._id}
-                </p>
-            `;
-
-            ordersContainer.appendChild(orderCard);
-
-        });
+        }, 500);
 
     } catch (error) {
 
@@ -86,11 +163,36 @@ const getOrders = async () => {
             "Unable to connect to server.";
 
     }
+
 };
 
 
 // ========================================
-// CALL FUNCTION
+// OPEN CART PAGE
 // ========================================
 
-getOrders();
+const openCart = () => {
+
+    window.location.href =
+        "cart.html";
+
+};
+
+
+// ========================================
+// OPEN ORDERS PAGE
+// ========================================
+
+const openOrders = () => {
+
+    window.location.href =
+        "orders.html";
+
+};
+
+
+// ========================================
+// LOAD PRODUCTS
+// ========================================
+
+showProducts();

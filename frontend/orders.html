@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Products</title>
+    <title>My Orders</title>
 
     <link
         rel="stylesheet"
@@ -27,12 +27,12 @@
 
         <div>
 
-            <button onclick="openCart()">
-                Cart
+            <button onclick="openProducts()">
+                Products
             </button>
 
-            <button onclick="openOrders()">
-                My Orders
+            <button onclick="openCart()">
+                Cart
             </button>
 
         </div>
@@ -42,19 +42,18 @@
 
     <div class="container">
 
-        <h1>Products</h1>
+        <h1>My Orders</h1>
 
-        <p id="message"></p>
+        <p id="message">
+            Loading orders...
+        </p>
 
-        <div
-            id="productsContainer"
-            class="products-container"
-        ></div>
+        <div id="ordersContainer"></div>
 
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="orders.js"></script>
 
 </body>
 

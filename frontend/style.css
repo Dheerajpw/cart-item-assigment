@@ -6,15 +6,37 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 40px;
+    background: #f4f4f4;
+}
+
+nav {
+    background: #222;
+    color: white;
+    padding: 15px 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav button {
+    padding: 8px 15px;
+    margin-left: 8px;
+
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: white;
+    max-width: 900px;
+    margin: 40px auto;
+
+    background: white;
+
     padding: 30px;
+
     border-radius: 10px;
 }
 
@@ -29,18 +51,67 @@ h1 {
     color: #555;
 }
 
-.order-card {
+.products-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.product-card {
     border: 1px solid #ddd;
+
     border-radius: 8px;
+
     padding: 20px;
+
     margin-bottom: 15px;
-    background-color: #fafafa;
+
+    background: #fafafa;
 }
 
-.order-card h2 {
-    margin-bottom: 10px;
+.product-card h2 {
+    margin-bottom: 12px;
 }
 
-.order-card p {
-    margin: 6px 0;
+.product-card p {
+    margin: 8px 0;
+}
+
+.product-card button {
+    margin-top: 10px;
+
+    padding: 8px 15px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    background: #222;
+
+    color: white;
+}
+
+#orderButton {
+    display: block;
+
+    margin: 20px auto 0;
+
+    padding: 12px 25px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    background: green;
+
+    color: white;
+
+    font-size: 16px;
 }
